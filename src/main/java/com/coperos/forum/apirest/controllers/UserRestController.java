@@ -2,6 +2,7 @@ package com.coperos.forum.apirest.controllers;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.coperos.forum.apirest.models.entity.User;
 import com.coperos.forum.apirest.models.services.IUserService;
 
@@ -25,6 +27,8 @@ public class UserRestController {
 	
 	@Autowired
 	private IUserService userService;
+	
+	
 	
 	@GetMapping("/users")
 	public List<User> index(){
@@ -54,11 +58,24 @@ public class UserRestController {
 		return userService.save(currentUser);
 	}
 	
+	@PutMapping("/users/timeout/{id}")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public User timeOut(@RequestBody User user, @PathVariable Long id) {
+		User currentUser = userService.findById(id);
+		
+		currentUser.setStatus(user.getStatus());
+		
+		return userService.save(currentUser);
+	}
+	
 	@DeleteMapping("/users/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		userService.delete(id);
 	}
+	
+	
+	
 	
 
 }

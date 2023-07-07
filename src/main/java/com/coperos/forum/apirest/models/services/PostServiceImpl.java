@@ -6,41 +6,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.coperos.forum.apirest.models.dao.IRolesDao;
-import com.coperos.forum.apirest.models.entity.Roles;
+import com.coperos.forum.apirest.models.dao.IPostDao;
+import com.coperos.forum.apirest.models.entity.Post;
 
 @Service
-public class RolesServiceImpl implements IRoleService{
-	
+public class PostServiceImpl implements IPostService{
+
 	@Autowired
-	private IRolesDao rolesDao;
+	private IPostDao postDao;
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Roles> findAll() {
+	public List<Post> findAll() {
 		
-		return (List<Roles>) rolesDao.findAll();
+		return (List<Post>) postDao.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Roles findById(Long id) {
+	public Post findById(Long id) {
 		
-		return rolesDao.findById(id).orElse(null);
+		return postDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public Roles save(Roles roles) {
+	public Post save(Post post) {
 		
-		return rolesDao.save(roles);
+		return postDao.save(post);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
 		
-        rolesDao.deleteById(id);
+		postDao.deleteById(id);
 		
 	}
 
