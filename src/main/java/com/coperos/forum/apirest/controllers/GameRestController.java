@@ -27,82 +27,68 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.coperos.forum.apirest.models.entity.User;
-import com.coperos.forum.apirest.models.services.IUserService;
-
+import com.coperos.forum.apirest.models.entity.Game;
+import com.coperos.forum.apirest.models.services.IGameService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
-public class UserRestController {
+public class GameRestController {
 	
 	@Autowired
-	private IUserService userService;
+	private IGameService gameService;
 	
-	
-	
-	@GetMapping("/users")
-	public List<User> index(){
-		return userService.findAll();
+	@GetMapping("/games")
+	public List<Game> index(){
+		return gameService.findAll();
 	}
 	
-	@GetMapping("/users/{id}")
-	public User show(@PathVariable Long id ) {
-		return userService.findById(id);
+	@GetMapping("/games/{id}")
+	public Game find(@PathVariable Long id) {
+		return gameService.findById(id);
 	}
 	
-	
-	@PostMapping("/users")
+	@PostMapping("/games")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User create(@RequestBody User user) {	
-		return userService.save(user);
+	public Game create(@RequestBody Game game) {
+		return gameService.save(game);
 	}
 	
-   	
-	@PutMapping("/users/{id}")
+	@PutMapping("/games/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User update(@RequestBody User user, @PathVariable Long id) {
-		User currentUser = userService.findById(id);
+	public Game update(@RequestBody Game game, @PathVariable Long id) {
+		Game currentGame = gameService.findById(id);
 		
-		currentUser.setUsername(user.getUsername());
-		currentUser.setPassword(user.getPassword());
-		currentUser.setEmail(user.getEmail());
+		currentGame.setName(game.getName());
+		currentGame.setInfo(game.getInfo());
+		currentGame.setDeveloper(game.getDeveloper());
+		currentGame.setGenre(game.getGenre());
+		currentGame.setPlatform(game.getPlatform());
+		currentGame.setReleaseDate(game.getReleaseDate());
 		
-		return userService.save(currentUser);
+		return gameService.save(currentGame);
 	}
 	
-	@PutMapping("/users/timeout/{id}")
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	public User timeOut(@RequestBody User user, @PathVariable Long id) {
-		User currentUser = userService.findById(id);
-		
-		currentUser.setStatus(user.getStatus());
-		
-		return userService.save(currentUser);
-	}
-	
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/games/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
-		userService.delete(id);
+		gameService.delete(id);
 	}
 	
 	
 	
-	
-	
-	@GetMapping("/users/image/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
-        User user = userService.findById(id);
+	@GetMapping("/games/image/{id}")
+    public ResponseEntity<?> getgameImageById(@PathVariable("id") Long id) {
+        Game game = gameService.findById(id);
 
-        if (user == null) {
+        if (game == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (user.getImage() != null) {
+        if (game.getImage() != null) {
             // Set the directory where the images are stored
             
-            String fileName = user.getImage();
+            String fileName = game.getImage();
             
             Path imagePath = Paths.get(fileName);
 
@@ -116,12 +102,12 @@ public class UserRestController {
         }
 
         // Return the user's information if no image is available
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(game, HttpStatus.OK);
     }
 	
 	
 	
-	 @PostMapping("users/{id}/upload")
+	 @PostMapping("games/{id}/upload")
 		public ResponseEntity<String> uploadImage(@PathVariable("id") Long id,
 		                                              @RequestParam("file") MultipartFile file) {
 		        try {
@@ -130,7 +116,7 @@ public class UserRestController {
 					byte[] bytes = file.getBytes();
 
 		            // Set the directory to save the file
-		            String directory = "D:/CODEO/SPRING/workspace/forum-apirest/src/main/resources/static/uploads/user/"; 
+		            String directory = "D:/CODEO/SPRING/workspace/forum-apirest/src/main/resources/static/uploads/game/"; 
 		            String fileName = file.getOriginalFilename();
 
 		            // Create the directory if it doesn't exist
@@ -146,16 +132,15 @@ public class UserRestController {
 		            outputStream.close();
 
 		            // Update the user's image field
-		            User user = userService.findById(id);
-		            user.setImage(directory + fileName);
-		            userService.save(user);
+		            Game game = gameService.findById(id);
+		            game.setImage(directory + fileName);
+		            gameService.save(game);
 
 		            return new ResponseEntity<>("File uploaded successfully!", HttpStatus.OK);
 		        } catch (IOException e) {
 		            return new ResponseEntity<>("Failed to upload file.", HttpStatus.INTERNAL_SERVER_ERROR);
 		        }
 		    }
-	
 	
 	
 	

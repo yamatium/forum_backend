@@ -1,37 +1,33 @@
 package com.coperos.forum.apirest.models.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "users")
-public class User implements Serializable {
+@Table(name = "games")
+public class Game implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String username;
-	private String password;
-	private String email;
-	private Boolean status;
-	
-	//
+	private String name;
+	private String info;
+	private String genre;
+	private String platform;
+	private String developer;
 	private String image;
+	private String releaseDate;
 
 	@Column(name = "created_at")
 	@Temporal(TemporalType.DATE)
@@ -45,22 +41,6 @@ public class User implements Serializable {
 	public void prePersist() {
 		createdAt = new Date();
 	}
-	
-	
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Post> posts = new ArrayList<>();
-	
-
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-	
-	
 
 	public Long getId() {
 		return id;
@@ -70,28 +50,28 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getInfo() {
+		return info;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getImage() {
+		return image;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public Date getCreatedAt() {
@@ -109,28 +89,42 @@ public class User implements Serializable {
 	public void setEditedAt(Date editedAt) {
 		this.editedAt = editedAt;
 	}
-	
-	public Boolean getStatus() {
-		return status;
+
+	public String getGenre() {
+		return genre;
 	}
 
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-	
-
-	public String getImage() {
-		return image;
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
-	public void setImage(String fileName) {
-		this.image = fileName;
+	public String getPlatform() {
+		return platform;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
+	public String getDeveloper() {
+		return developer;
+	}
+
+	public void setDeveloper(String developer) {
+		this.developer = developer;
+	}
+
+	public String getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 }
