@@ -24,23 +24,25 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	@Transactional(readOnly = true)
 	public User findById(Long id) {
-		
 		return userDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
 	public User save(User user) {
-		
 		return userDao.save(user);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		
 		userDao.deleteById(id);
-		
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userDao.findByEmail(email);
 	}
 
 }
