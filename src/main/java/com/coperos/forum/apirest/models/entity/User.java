@@ -28,7 +28,7 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	private String email;
-	private Boolean status;
+	private Boolean status = true;
 	
 	//
 	private String image;

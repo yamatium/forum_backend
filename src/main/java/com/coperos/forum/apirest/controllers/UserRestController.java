@@ -39,8 +39,6 @@ public class UserRestController {
 	@Autowired
 	private IUserService userService;
 	
-	
-	
 	@GetMapping("/users")
 	public List<User> index(){
 		return userService.findAll();
@@ -57,6 +55,23 @@ public class UserRestController {
 	public User create(@RequestBody User user) {	
 		return userService.save(user);
 	}
+	
+	
+	@PostMapping("/login")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<String> login(@RequestBody User user) {
+		
+		User existingUser = userService.findByEmail(user.getEmail());
+		
+		if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
+			return new ResponseEntity<>("Login successful",HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("invalid username or password", HttpStatus.UNAUTHORIZED);
+		}
+		
+	}
+	
+	
 	
    	
 	@PutMapping("/users/{id}")

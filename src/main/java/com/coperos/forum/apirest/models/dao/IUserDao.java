@@ -6,4 +6,5 @@ import com.coperos.forum.apirest.models.entity.User;
 
 public interface IUserDao extends CrudRepository<User, Long>{
 
+	User findByEmail(String email);
 }
